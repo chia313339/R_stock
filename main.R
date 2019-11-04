@@ -3,6 +3,7 @@ library(zoo)
 library(xts)
 library(TTR)
 library('ggplot2')
+library(plotly)
 
 # 設定股票代碼、回朔年份及相關設定
 stock_no = "0050.TW"
@@ -40,12 +41,19 @@ Slope = stock_reg$coefficients[2]
 Sd = summary(stock_reg)$s
 
 # 繪圖畫出趨勢圖
-ggplot(data=fiveline_data,aes(x=stock_num)) + geom_line(aes(y=stock_price),col=1) +
-  geom_line(aes(y=reg_line),col=2) +
-  geom_line(aes(y=ss1),col=4) +
-  geom_line(aes(y=ss2),col=3) +
-  geom_line(aes(y=ss3),col=3) +
-  geom_line(aes(y=ss4),col=4)
+# ggplot(data=fiveline_data,aes(x=stock_num)) + geom_line(aes(y=stock_price),col=1) +
+#   geom_line(aes(y=reg_line),col=2) +
+#   geom_line(aes(y=ss1),col=4) +
+#   geom_line(aes(y=ss2),col=3) +
+#   geom_line(aes(y=ss3),col=3) +
+#   geom_line(aes(y=ss4),col=4)
+plot_ly(data = fiveline_data, x = ~stock_date, y = ~stock_price, type = 'scatter', mode = 'lines', name = '歷史價格') %>%
+  add_trace(y = ~reg_line, name = '股價趨勢線', mode = 'lines') %>%
+  add_trace(y = ~ss4, name = '高2倍標準差', mode = 'lines') %>%
+  add_trace(y = ~ss3, name = '高1倍標準差', mode = 'lines') %>%
+  add_trace(y = ~ss2, name = '低1倍標準差', mode = 'lines') %>% 
+  add_trace(y = ~ss1, name = '低2倍標準差', mode = 'lines')
+
 
 # 計算現在股價買賣點
 # position從區間計算，加總的值為上至下數的第Ｎ區塊
