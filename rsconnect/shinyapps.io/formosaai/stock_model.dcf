@@ -1,0 +1,10 @@
+name: stock_model
+title:
+username:
+account: formosaai
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1486139
+bundleId: 2597128
+url: https://formosaai.shinyapps.io/stock_model/
+when: 1574069616.82263
