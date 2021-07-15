@@ -4,6 +4,9 @@ library(zoo)
 library(xts)
 library(TTR)
 library(plotly)
+library(DBI)
+library(RPostgres)
+
 
 server = function(input, output) {
   
@@ -104,6 +107,20 @@ server = function(input, output) {
     
     
   })
+  
+  output$stock_df <- DT::renderDataTable(DT::datatable({
+    db <- 'd1ijjs0ks408lh'  #provide the name of your db
+    host_db <- "ec2-35-169-92-231.compute-1.amazonaws.com" #i.e. # i.e. 'ec2-54-83-201-96.compute-1.amazonaws.com'  
+    db_port <- '5432'  # or any other port specified by the DBA
+    db_user <- "ziyzshgpharoja"  
+    db_password <- "04bb16e2cdb3d7d0fa29e63830f7cc9e820f0084b96e51f795422152ce4e0849"
+    con <- dbConnect(RPostgres::Postgres(), dbname = db, host=host_db, port=db_port, user=db_user, password=db_password)  
+    
+    sql = "select stock_date, A.stock_no, stock_name, A.stock_price, stock_status, rsquared, slope, sd from stock_status A inner join stock_list B on A.stock_no=B.stock_no "
+    df = dbGetQuery(con,sql)
+    names(df) = c('最新日期','股票代號','股票名稱','收盤價','股價評估','回歸解釋率','斜率','標準差sd')
+    df
+  }))
   
   
 }
