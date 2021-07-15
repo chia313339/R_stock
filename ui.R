@@ -40,7 +40,14 @@ ui = tagList(
                DT::dataTableOutput('allview')
              )
     ),
-    tabPanel("功能暫存頁面2", "功能尚未開放"),
-    tabPanel("功能暫存頁面3", "功能尚未開放")
+    tabPanel("各股評估資料表",
+             h1("各股股票資訊"),
+             helpText("提示：可以根據欄位進行排序。"),
+             hr(),
+             #tableOutput("stock_df")
+             DT::dataTableOutput('stock_df')
+             
+             ),
+    tabPanel("功能暫存頁面", "功能尚未開放")
   )
 )
